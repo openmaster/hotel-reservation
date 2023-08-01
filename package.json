@@ -1,0 +1,47 @@
+{
+  "name": "react-typescript",
+  "version": "1.0.0",
+  "description": "React and TypeScript example starter project",
+  "keywords": [
+    "typescript",
+    "react",
+    "starter"
+  ],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.2",
+    "@mui/x-date-pickers": "^6.10.2",
+    "dayjs": "^1.11.9",
+    "loader-utils": "3.2.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "eslint": "^8.46.0",
+    "eslint-config-standard-with-typescript": "^37.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.1",
+    "typescript": "^5.1.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
