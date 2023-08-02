@@ -2,8 +2,9 @@
 //   businessSuite = "business-suite",
 //   presidentialSuite = "presidential-suite",
 // }
-export type RoomSize = "business-suite" | "presidential-suite";
 
+export type RoomSize = "business-suite" | "presidential-suite";
+export type PaymentTypes = 'cash' | 'credit card' | 'paypal' | 'bitcoin'
 export interface InitData {
   id: number;
   stay: {
