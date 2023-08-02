@@ -1,17 +1,17 @@
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
 
 interface ISearch {
-  handleOnChange: any;
+  handleOnChange: any
 }
-export default function Search({ handleOnChange }: ISearch) {
+export default function Search ({ handleOnChange }: ISearch) {
   return (
     <Box
       sx={{
         width: 500,
-        maxWidth: "100%",
-        marginLeft: "auto",
-        marginRight: "auto",
+        maxWidth: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }}
     >
       <TextField
@@ -21,5 +21,5 @@ export default function Search({ handleOnChange }: ISearch) {
         id="search"
       />
     </Box>
-  );
+  )
 }

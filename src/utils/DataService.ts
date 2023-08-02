@@ -1,9 +1,9 @@
-import { Subject, interval } from "rxjs";
-import { InitData } from "../models";
+import { Subject, interval } from 'rxjs'
+import type { InitData } from '../models'
 
-export const subject = new Subject();
+export const subject = new Subject()
 
 export const DataService = {
-  changeData: (data: Array<InitData>) => subject.next(data),
-  onData: () => subject.asObservable(),
-};
+  changeData: (data: InitData[]) => { subject.next(data) },
+  onData: () => subject.asObservable()
+}

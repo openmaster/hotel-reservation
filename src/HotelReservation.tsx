@@ -1,12 +1,12 @@
-import Search from "./Search";
-import SearchResults from "./SearchResults";
-import { useState, useContext } from "react";
-import { InitData } from "./models";
-import { DataContext } from "./DataProvider";
+import Search from './Search'
+import SearchResults from './SearchResults'
+import { useState, useContext } from 'react'
+import { InitData } from './models'
+import { DataContext } from './DataProvider'
 
-export default function HotelReservation() {
-  const dataList = useContext<Array<InitData>>(DataContext);
-  const [searchedList, setSearchedList] = useState<Array<InitData>>(dataList);
+export default function HotelReservation () {
+  const dataList = useContext<InitData[]>(DataContext)
+  const [searchedList, setSearchedList] = useState<InitData[]>(dataList)
   // function handleClick() {
   //   DataService.changeData([
   //     ...initData,
@@ -21,7 +21,7 @@ export default function HotelReservation() {
           d.lastName.toLocaleLowerCase().includes(txt.toLocaleLowerCase()) ||
           d.phone.includes(txt)
       )
-    );
+    )
   }
   return (
     <div>
@@ -30,5 +30,5 @@ export default function HotelReservation() {
       <SearchResults reservations={searchedList} />
       {/* <button onClick={handleClick}>add data</button> */}
     </div>
-  );
+  )
 }
