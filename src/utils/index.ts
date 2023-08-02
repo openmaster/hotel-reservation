@@ -1,2 +1,2 @@
-export * from "./DataService";
-export * from "./DateTime";
+export * from './DataService'
+export * from './DateTime'
