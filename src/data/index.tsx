@@ -5,7 +5,7 @@ export const initData: InitData[] = [
     id: 1,
     stay: {
       arrivalDate: '2021-11-18T05:00:00.000Z',
-      departureDate: '2021-11-25T05:00:00.000Z',
+      departureDate: '2021-11-25T05:00:00.000Z'
     },
     room: {
       roomSize: 'business-suite',
@@ -70,3 +70,41 @@ export const initData: InitData[] = [
     confirm: true
   }
 ]
+
+export const newReservation: InitData = {
+  id: 1,
+  stay: {
+    arrivalDate: new Date().toISOString(),
+    departureDate: new Date().toISOString()
+  },
+  room: {
+    roomSize: 'business-suite',
+    roomQuantity: 1
+  },
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  addressStreet: {
+    streetName: '',
+    streetNumber: ''
+  },
+  addressLocation: {
+    zipCode: '',
+    state: '',
+    city: ''
+  },
+  extras: [
+    'extraBreakfast',
+    'extraTV',
+    'extraWiFi',
+    'extraParking',
+    'extraBalcony'
+  ],
+  payment: 'cc',
+  note: '',
+  tags: ['hotel', 'booking', 'labtest'],
+  reminder: true,
+  newsletter: true,
+  confirm: false
+}

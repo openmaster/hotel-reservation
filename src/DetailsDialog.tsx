@@ -23,12 +23,13 @@ interface IDetailsDialog {
   setFormValues: any
   openDialog: boolean
   handleDialogClose: any
-  handleUpdateData: any
+  handleData: any
+  addNew: boolean
 }
 // using custom controls for cleaner code and maintainability.
 
 export default function DetailsDialog (props: IDetailsDialog) {
-  const { formValues, setFormValues, openDialog, handleDialogClose, handleUpdateData } = props
+  const { formValues, setFormValues, openDialog, handleDialogClose, handleData, addNew } = props
   const paymentRadioTypes: PaymentRadioTypes[] = [
     { label: 'Cash', value: 'cash' },
     { label: 'Credit Card', value: 'cc' },
@@ -49,15 +50,21 @@ export default function DetailsDialog (props: IDetailsDialog) {
               <Controls.MyGrid>
                 <Controls.MyDatePicker
                   value={formValues.stay.arrivalDate}
+                  minDate={addNew ? new Date() : ''}
                   label="Date of Arrival"
                   onChange={(newDate: string) => {
-                    setFormValues({ ...formValues, stay: { ...formValues.stay, arrivalDate: new Date(newDate).toISOString() } })
+                    if (new Date(newDate) > new Date(formValues.stay.departureDate)) {
+                      setFormValues({ ...formValues, stay: { ...formValues.stay, arrivalDate: new Date(newDate).toISOString(), departureDate: new Date(newDate).toISOString() } })
+                    } else {
+                      setFormValues({ ...formValues, stay: { ...formValues.stay, arrivalDate: new Date(newDate).toISOString() } })
+                    }
                   }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid>
                 <Controls.MyDatePicker
                   value={formValues.stay.departureDate}
+                  minDate={formValues.stay.arrivalDate}
                   label="Date of Arrival"
                   onChange={(newDate: string) => {
                     setFormValues({ ...formValues, stay: { ...formValues.stay, departureDate: new Date(newDate).toISOString() } })
@@ -281,7 +288,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleUpdateData}>update</Button>
+          <Button onClick={handleData}>update</Button>
         </DialogActions>
       </Dialog>
   )

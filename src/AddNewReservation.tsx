@@ -1,50 +1,38 @@
 import Button from '@mui/material/Button'
-import { type InitData } from './models'
-
-import { useContext } from 'react'
-import { DataService } from './utils'
-import { DataContext } from './DataProvider'
 import DetailsDialog from './DetailsDialog'
 import useDialog from './Hooks/useDialog'
+import useStateData from './Hooks/useStateData'
+import Stack from '@mui/material/Stack';
 
-interface IAddNewReservation {
-  reservation: InitData
-}
+import { useContext } from 'react'
+import { DataContext } from './DataProvider'
+import { getNewReservation } from './utils'
 
-export default function AddNewReservation ({ reservation }: IAddNewReservation) {
-  const dataList = useContext<InitData[]>(DataContext)
+export default function AddNewReservation () {
+  const dataList = useContext(DataContext)
+  const newReservation = getNewReservation(dataList)
   const {
     openDialog,
     formValues,
     setFormValues,
     handleDialogOpen,
     handleDialogClose
-  } = useDialog(reservation)
-
-  const handleUpdateData = () => {
-    // rxjs based service instance to inject new data.
-    DataService.changeData(dataList.map((d: InitData) => {
-      if (d.id === formValues.id) {
-        return formValues
-      } else {
-        return d
-      }
-    }))
-    handleDialogClose()
-  }
+  } = useDialog(newReservation)
+  const { addReservation } = useStateData(handleDialogClose) // custom hook that use rxjs for state manupulations.
 
   return (
-    <>
+     <Stack spacing={2} direction="row" justifyContent='center'>
       <Button sx={{ float: 'right' }} size="small" onClick={handleDialogOpen}>
-        Details
+        Add
       </Button>
       <DetailsDialog
         formValues={formValues}
         setFormValues={setFormValues}
         openDialog={openDialog}
-        handleUpdateData={handleUpdateData}
+        handleData={() => { addReservation(formValues) }}
         handleDialogClose={handleDialogClose}
+        addNew={true}
       />
-    </>
+    </Stack>
   )
 }
