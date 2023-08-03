@@ -9,7 +9,7 @@ export const initData: InitData[] = [
     },
     room: {
       roomSize: 'business-suite',
-      roomQuantity: 3,
+      roomQuantity: 3
     },
     firstName: 'John',
     lastName: 'Doe',

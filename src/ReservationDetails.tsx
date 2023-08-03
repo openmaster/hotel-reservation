@@ -26,21 +26,27 @@ import { DataContext } from './DataProvider'
 interface IReservationDetails {
   reservation: InitData
 }
-export default function ReservationDetails ({
-  reservation
-}: IReservationDetails) {
+export default function ReservationDetails ({ reservation }: IReservationDetails) {
   const dataList = useContext<InitData[]>(DataContext)
   const [open, setOpen] = useState<boolean>(false)
   const [formValues, setFormValues] = useState<InitData>(reservation)
+
   const handleClickOpen = () => {
     setOpen(true)
+    setFormValues(reservation)
   }
 
   const handleClose = () => {
     setOpen(false)
   }
   const handleSubmit = () => {
-    DataService.changeData([...dataList, formValues]) 
+    DataService.changeData(dataList.map((d: InitData) => {
+      if (d.id === formValues.id) {
+        return formValues
+      } else {
+        return d
+      }
+    }))
     handleClose()
   }
   // used to display the payment types
@@ -72,17 +78,22 @@ export default function ReservationDetails ({
               alignItems="center"
             >
               <Controls.MyGrid>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker sx={{ margin: '20px' }} label="Date of Arrival" />
-                </LocalizationProvider>
+                <Controls.MyDatePicker
+                  value={formValues.stay.arrivalDate}
+                  label="Date of Arrival"
+                  onChange={(newDate: string) => {
+                    setFormValues({ ...formValues, stay: { ...formValues.stay, arrivalDate: new Date(newDate).toISOString() } })
+                  }}
+                />
               </Controls.MyGrid>
               <Controls.MyGrid>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    sx={{ margin: '20px' }}
-                    label="Date of Departure"
-                  />
-                </LocalizationProvider>
+                <Controls.MyDatePicker
+                  value={formValues.stay.departureDate}
+                  label="Date of Arrival"
+                  onChange={(newDate: string) => {
+                    setFormValues({ ...formValues, stay: { ...formValues.stay, departureDate: new Date(newDate).toISOString() } })
+                  }}
+                />
               </Controls.MyGrid>
               <Controls.MyGrid>
                 <FormControl variant="standard" sx={{ margin: '20px' }}>
@@ -270,9 +281,9 @@ export default function ReservationDetails ({
                 <Controls.MyColorSwitch
                   name='reminder'
                   label='Send me a reminder'
-                  value={formValues.reminder}
+                  checked={formValues.reminder}
                   onChange={(e: any) => {
-                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                    setFormValues({ ...formValues, [e.target.name]: e.target.checked })
                   }}
                 />
               </Controls.MyGrid>
@@ -280,9 +291,9 @@ export default function ReservationDetails ({
                 <Controls.MyColorSwitch
                   name='newsletter'
                   label='Subscribe to newsletter'
-                  value={formValues.newsletter}
+                  checked={formValues.newsletter}
                   onChange={(e: any) => {
-                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                    setFormValues({ ...formValues, [e.target.name]: e.target.checked })
                   }}
                 />
               </Controls.MyGrid>
@@ -290,9 +301,9 @@ export default function ReservationDetails ({
                 <Controls.MyCheckBox
                   name='confirm'
                   label='I confirm the information given above'
-                  value={formValues.confirm}
+                  checked={formValues.confirm}
                   onChange={(e: any) => {
-                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                    setFormValues({ ...formValues, [e.target.name]: e.target.checked })
                   }}
                 />
               </Controls.MyGrid>

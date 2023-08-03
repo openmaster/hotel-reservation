@@ -2,9 +2,10 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 
 interface ISearch {
+  txt: string
   handleOnChange: any
 }
-export default function Search ({ handleOnChange }: ISearch) {
+export default function Search ({ handleOnChange, txt }: ISearch) {
   return (
     <Box
       sx={{
@@ -16,6 +17,7 @@ export default function Search ({ handleOnChange }: ISearch) {
     >
       <TextField
         onChange={(e) => handleOnChange(e.target.value)}
+        value={txt}
         fullWidth
         label="Search with name or phone number"
         id="search"

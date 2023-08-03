@@ -3,16 +3,16 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 
 interface IColorSwitch {
   name: string
-  value: boolean
+  checked: boolean
   label: string
   onChange: any
 }
 export default function MyCheckBox (props: IColorSwitch) {
-  const { name, value, label, onChange } = props
+  const { name, checked, label, onChange } = props
   return (
      <FormControlLabel
         name={name}
-        value={value}
+        checked={checked}
         onChange={onChange}
         control={<Checkbox defaultChecked />}
         label={label}

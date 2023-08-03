@@ -3,11 +3,10 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
-import Button from '@mui/material/Button'
 import { dateTimeFormate } from './utils'
 import ReservationDetails from './ReservationDetails'
+import DeleteReservation from './DeleteReservation'
 
-// import { initData } from "./data";
 interface ISearchResults {
   reservations: InitData[]
 }
@@ -42,9 +41,7 @@ export default function SearchResults ({ reservations }: ISearchResults) {
                     {`${reservation.room.roomSize} - ${reservation.room.roomQuantity} - Ph: ${reservation.phone}`}
                   </p>
 
-                  <Button sx={{ float: 'right' }} size="small" color="error">
-                    Delete
-                  </Button>
+                  <DeleteReservation id={reservation.id} />
                   <ReservationDetails reservation={reservation} />
                 </>
               }
