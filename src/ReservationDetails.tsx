@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button'
-import { type InitData, RoomSize } from './models'
+import { type InitData, type PaymentRadioTypes } from './models'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -17,18 +17,21 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormHelperText from '@mui/material/FormHelperText'
 import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
+import { MuiChipsInput } from 'mui-chips-input'
 
-import { useState } from 'react'
-
+import { useState, useContext } from 'react'
+import { DataService } from './utils'
+import { DataContext } from './DataProvider'
 interface IReservationDetails {
   reservation: InitData
 }
 export default function ReservationDetails ({
   reservation
 }: IReservationDetails) {
+  const dataList = useContext<InitData[]>(DataContext)
   const [open, setOpen] = useState<boolean>(false)
-
+  const [formValues, setFormValues] = useState<InitData>(reservation)
   const handleClickOpen = () => {
     setOpen(true)
   }
@@ -36,7 +39,18 @@ export default function ReservationDetails ({
   const handleClose = () => {
     setOpen(false)
   }
-  const handleChange = () => {}
+  const handleSubmit = () => {
+    DataService.changeData([...dataList, formValues]) 
+    handleClose()
+  }
+  // used to display the payment types
+  const paymentRadioTypes: PaymentRadioTypes[] = [
+    { label: 'Cash', value: 'cash' },
+    { label: 'Credit Card', value: 'cc' },
+    { label: 'Pay pal', value: 'paypal' },
+    { label: 'Bitcoin', value: 'bitcoin' }
+  ]
+
   return (
     <>
       <Button sx={{ float: 'right' }} size="small" onClick={handleClickOpen}>
@@ -50,7 +64,7 @@ export default function ReservationDetails ({
       >
         <DialogTitle>your Reservation Details </DialogTitle>
         <DialogContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Grid
               container
               spacing={2}
@@ -73,14 +87,15 @@ export default function ReservationDetails ({
               <Controls.MyGrid>
                 <FormControl variant="standard" sx={{ margin: '20px' }}>
                   <InputLabel id="demo-simple-select-helper-label">
-                    Age
+                    Room Size
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={reservation.room.roomSize}
-                    label="Age"
-                    onChange={handleChange}
+                    name="roomSize"
+                    value={formValues.room.roomSize}
+                    label="Room Size"
+                    onChange={(e: any) => {
+                      setFormValues({ ...formValues, room: { ...formValues.room, [e.target.name]: e.target.value } })
+                    }}
                   >
                     <MenuItem value={'business-suite'}>business-suite</MenuItem>
                     <MenuItem value={'presidential-suite'}>
@@ -92,114 +107,111 @@ export default function ReservationDetails ({
               </Controls.MyGrid>
 
               <Controls.MyGrid>
-                <TextField
-                  sx={{ margin: '20px' }}
+                <Controls.MyTextField
                   type="number"
-                  required
-                  name="room.rooSize"
-                  defaultValue={reservation.room.roomQuantity}
+                  label='Room Quantity'
+                  required={true}
+                  name="roomQuantity"
+                  value={formValues.room.roomQuantity}
                   helperText="Maxium: 5"
-                  variant="standard"
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, room: { ...formValues.room, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
-                <TextField
-                  type="text"
-                  required
+                <Controls.MyTextField
+                  required={true}
                   name="firstName"
                   label="First Name"
-                  value={reservation.firstName}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.firstName}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
-                <TextField
-                  type="text"
+                <Controls.MyTextField
                   required
                   name="lastName"
                   label="Last Name"
-                  value={reservation.lastName}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.lastName}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
                 <TextField
                   type="email"
-                  required
                   name="email"
                   label="Email"
-                  value={reservation.email}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.email}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
-                <TextField
-                  type="text"
+                <Controls.MyTextField
                   required
                   name="phone"
                   label="Phone Number"
-                  value={reservation.phone}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.phone}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
                 />
               </Controls.MyGrid>
               {/* address */}
               <Controls.MyGrid vp={6}>
                 <TextField
-                  type="text"
-                  required
-                  name="addressStreet.streetName"
+                  name="streetName"
                   label="Street Name"
-                  value={reservation.addressStreet.streetName}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.addressStreet.streetName}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, addressStreet: { ...formValues.addressStreet, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={6}>
                 <TextField
-                  type="text"
-                  required
-                  name="addressStreet.streetName"
+                  name="streetNumber"
                   label="Street Number"
-                  value={reservation.addressStreet.streetName}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.addressStreet.streetNumber}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, addressStreet: { ...formValues.addressStreet, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={4}>
                 <TextField
-                  type="text"
-                  required
-                  name="addressLocation.zipCode"
+                  name="zipCode"
                   label="Zip"
-                  value={reservation.addressLocation.zipCode}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.addressLocation.zipCode}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, addressLocation: { ...formValues.addressLocation, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={4}>
                 <TextField
-                  type="text"
-                  required
-                  name="addressLocation.state"
+                  name="state"
                   label="State"
-                  value={reservation.addressLocation.state}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.addressLocation.state}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, addressLocation: { ...formValues.addressLocation, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={4}>
                 <TextField
-                  type="text"
-                  required
-                  name="addressLocation.city"
+                  name="city"
                   label="City"
-                  value={reservation.addressLocation.city}
-                  sx={{ margin: '10px' }}
-                  variant="standard"
+                  value={formValues.addressLocation.city}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, addressLocation: { ...formValues.addressLocation, [e.target.name]: e.target.value } })
+                  }}
                 />
               </Controls.MyGrid>
               {/* Extras */}
@@ -210,11 +222,14 @@ export default function ReservationDetails ({
                   </InputLabel>
                   <Select
                     multiple
+                    name="extras"
                     labelId="demo-simple-select-helper-label"
                     id="demo-simple-select-helper"
-                    value={reservation.extras}
+                    value={formValues.extras}
                     label="Extras"
-                    onChange={handleChange}
+                    onChange={(e: any) => {
+                      setFormValues({ ...formValues, [e.target.name]: [...e.target.value] })
+                    }}
                   >
                     <MenuItem value={'extraBreakfast'}>extraBreakfast</MenuItem>
                     <MenuItem value={'extraTV'}>extraTV</MenuItem>
@@ -227,11 +242,58 @@ export default function ReservationDetails ({
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
                 <Controls.MyRadioGroup
-                  name="reservation.payment"
+                  name="payment"
                   label="Payment"
-                  value={reservation.payment}
-                  onChange={() => { alert('hitting') }}
-                  items={['cash', 'cc']}
+                  value={formValues.payment}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
+                  items={paymentRadioTypes}
+                />
+              </Controls.MyGrid>
+              <Controls.MyGrid vp={12}>
+                <Controls.MyTextField
+                  name="note"
+                  label="Personal Notes"
+                  value={formValues.note}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
+                  />
+              </Controls.MyGrid>
+              <Controls.MyGrid>
+                  <MuiChipsInput variant='standard' label='Tags' name="tags" value={formValues.tags} onChange={(newChips: any) => {
+                    setFormValues({ ...formValues, tags: [...newChips] })
+                  }} />
+              </Controls.MyGrid>
+              <Controls.MyGrid vp={12}>
+                <Controls.MyColorSwitch
+                  name='reminder'
+                  label='Send me a reminder'
+                  value={formValues.reminder}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
+                />
+              </Controls.MyGrid>
+               <Controls.MyGrid vp={12}>
+                <Controls.MyColorSwitch
+                  name='newsletter'
+                  label='Subscribe to newsletter'
+                  value={formValues.newsletter}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
+                />
+              </Controls.MyGrid>
+               <Controls.MyGrid vp={12}>
+                <Controls.MyCheckBox
+                  name='confirm'
+                  label='I confirm the information given above'
+                  value={formValues.confirm}
+                  onChange={(e: any) => {
+                    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+                  }}
                 />
               </Controls.MyGrid>
             </Grid>
@@ -239,7 +301,7 @@ export default function ReservationDetails ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>update</Button>
+          <Button onClick={handleSubmit}>update</Button>
         </DialogActions>
       </Dialog>
     </>
