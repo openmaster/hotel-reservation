@@ -22,13 +22,13 @@ interface IDetailsDialog {
   formValues: InitData
   setFormValues: any
   openDialog: boolean
-  handleCloseDialog: any
+  handleDialogClose: any
   handleUpdateData: any
 }
 // using custom controls for cleaner code and maintainability.
 
 export default function DetailsDialog (props: IDetailsDialog) {
-  const { formValues, setFormValues, openDialog, handleCloseDialog, handleUpdateData } = props
+  const { formValues, setFormValues, openDialog, handleDialogClose, handleUpdateData } = props
   const paymentRadioTypes: PaymentRadioTypes[] = [
     { label: 'Cash', value: 'cash' },
     { label: 'Credit Card', value: 'cc' },
@@ -36,7 +36,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
     { label: 'Bitcoin', value: 'bitcoin' }
   ]
   return (
-        <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth={true} maxWidth={'lg'}>
+        <Dialog open={openDialog} onClose={handleDialogClose} fullWidth={true} maxWidth={'lg'}>
         <DialogTitle>your Reservation Details </DialogTitle>
         <DialogContent>
           <form>
@@ -280,7 +280,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleDialogClose}>Cancel</Button>
           <Button onClick={handleUpdateData}>update</Button>
         </DialogActions>
       </Dialog>
