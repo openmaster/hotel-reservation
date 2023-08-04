@@ -15,7 +15,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { MuiChipsInput } from 'mui-chips-input'
-
+import useFormValidation from './Hooks/useFormValidation'
 import { type InitData, type PaymentRadioTypes } from './models'
 
 interface IDetailsDialog {
@@ -26,10 +26,14 @@ interface IDetailsDialog {
   handleData: any
   addNew: boolean
 }
-// using custom controls for cleaner code and maintainability.
 
 export default function DetailsDialog (props: IDetailsDialog) {
   const { formValues, setFormValues, openDialog, handleDialogClose, handleData, addNew } = props
+
+  const { validLength, validEmail } = useFormValidation()
+  // using basic validation as instruction suggests. we can use library like 'react-hook-forms' for better implementation.
+  const error = validLength(formValues.firstName) || validLength(formValues.lastName) || validEmail(formValues.email)
+
   const paymentRadioTypes: PaymentRadioTypes[] = [
     { label: 'Cash', value: 'cash' },
     { label: 'Credit Card', value: 'cc' },
@@ -53,6 +57,8 @@ export default function DetailsDialog (props: IDetailsDialog) {
                   minDate={addNew ? new Date() : ''}
                   label="Date of Arrival"
                   onChange={(newDate: string) => {
+                    // setting range of date picker based on starting date.
+                    // useing Date Range component would be better but it is pro feature. so I am using this one.
                     if (new Date(newDate) > new Date(formValues.stay.departureDate)) {
                       setFormValues({ ...formValues, stay: { ...formValues.stay, arrivalDate: new Date(newDate).toISOString(), departureDate: new Date(newDate).toISOString() } })
                     } else {
@@ -97,10 +103,12 @@ export default function DetailsDialog (props: IDetailsDialog) {
                 <Controls.MyTextField
                   type="number"
                   label='Room Quantity'
-                  required={true}
+                  required
                   name="roomQuantity"
                   value={formValues.room.roomQuantity}
                   helperText="Maxium: 5"
+                  max={5}
+                  min={1}
                   onChange={(e: any) => {
                     setFormValues({ ...formValues, room: { ...formValues.room, [e.target.name]: e.target.value } })
                   }}
@@ -108,9 +116,11 @@ export default function DetailsDialog (props: IDetailsDialog) {
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
                 <Controls.MyTextField
-                  required={true}
+                  required
                   name="firstName"
                   label="First Name"
+                  error={validLength(formValues.firstName)}
+                  errorMSg='Please enter your first Name'
                   value={formValues.firstName}
                   onChange={(e: any) => {
                     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -122,6 +132,8 @@ export default function DetailsDialog (props: IDetailsDialog) {
                   required
                   name="lastName"
                   label="Last Name"
+                  error={validLength(formValues.lastName)}
+                  errorMSg='please enter your last name'
                   value={formValues.lastName}
                   onChange={(e: any) => {
                     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -129,7 +141,9 @@ export default function DetailsDialog (props: IDetailsDialog) {
                 />
               </Controls.MyGrid>
               <Controls.MyGrid vp={12}>
-                <TextField
+                <Controls.MyTextField
+                  error={validEmail(formValues.email)}
+                  errorMSg='Please enter a valid email'
                   type="email"
                   name="email"
                   label="Email"
@@ -288,7 +302,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleData}>update</Button>
+          <Button disabled={error} onClick={handleData}>update</Button>
         </DialogActions>
       </Dialog>
   )
