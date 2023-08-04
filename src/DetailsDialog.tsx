@@ -42,7 +42,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
   ]
   return (
         <Dialog open={openDialog} onClose={handleDialogClose} fullWidth={true} maxWidth={'lg'}>
-        <DialogTitle>your Reservation Details </DialogTitle>
+        <DialogTitle>Your Reservation Details </DialogTitle>
         <DialogContent>
           <form>
             <Grid
@@ -302,7 +302,7 @@ export default function DetailsDialog (props: IDetailsDialog) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button disabled={error} onClick={handleData}>update</Button>
+          <Button disabled={error} onClick={handleData}>{addNew ? 'Add' : 'Update'}</Button>
         </DialogActions>
       </Dialog>
   )

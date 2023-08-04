@@ -22,8 +22,8 @@ export default function AddNewReservation () {
 
   return (
      <Stack spacing={2} direction="row" justifyContent='center'>
-      <Button sx={{ float: 'right' }} size="small" onClick={handleDialogOpen}>
-        Add
+      <Button role="button" name="addNew" variant='contained' sx={{ float: 'right' }} size="small" onClick={handleDialogOpen}>
+        Add New Reservation
       </Button>
       <DetailsDialog
         formValues={formValues}

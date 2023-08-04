@@ -20,7 +20,7 @@ export default function Search ({ handleOnChange, txt }: ISearch) {
         value={txt}
         fullWidth
         label="Search with name or phone number"
-        id="search"
+        id="searchBar"
       />
     </Box>
   )
