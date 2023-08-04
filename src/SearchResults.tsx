@@ -1,25 +1,24 @@
-import { InitData } from "./models";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import Button from "@mui/material/Button";
-import { dateTimeFormate } from "./utils";
-import ReservationDetails from "./ReservationDetails";
+import { type InitData } from './models'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import Divider from '@mui/material/Divider'
+import ListItemText from '@mui/material/ListItemText'
+import { dateTimeFormate } from './utils'
+import ReservationDetails from './ReservationDetails'
+import DeleteReservation from './DeleteReservation'
 
-// import { initData } from "./data";
 interface ISearchResults {
-  reservations: Array<InitData>;
+  reservations: InitData[]
 }
-export default function SearchResults({ reservations }: ISearchResults) {
+export default function SearchResults ({ reservations }: ISearchResults) {
   return (
     <List
       sx={{
-        width: "100%",
+        width: '100%',
         maxWidth: 360,
-        bgcolor: "background.paper",
-        marginLeft: "auto",
-        marginRight: "auto",
+        bgcolor: 'background.paper',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }}
     >
       {reservations.map((reservation: InitData, index: number) => (
@@ -29,7 +28,7 @@ export default function SearchResults({ reservations }: ISearchResults) {
               primary={`${reservation.firstName} ${reservation.lastName}`}
               secondary={
                 <>
-                  <small style={{ textAlign: "right" }}>
+                  <small style={{ textAlign: 'right' }}>
                     Ph: {reservation.phone}
                   </small>
                   <p>
@@ -42,9 +41,7 @@ export default function SearchResults({ reservations }: ISearchResults) {
                     {`${reservation.room.roomSize} - ${reservation.room.roomQuantity} - Ph: ${reservation.phone}`}
                   </p>
 
-                  <Button sx={{ float: "right" }} size="small" color="error">
-                    Delete
-                  </Button>
+                  <DeleteReservation id={reservation.id} />
                   <ReservationDetails reservation={reservation} />
                 </>
               }
@@ -54,5 +51,5 @@ export default function SearchResults({ reservations }: ISearchResults) {
         </div>
       ))}
     </List>
-  );
+  )
 }

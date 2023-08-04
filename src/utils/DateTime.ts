@@ -1,3 +1,3 @@
 export const dateTimeFormate = (date: string) => {
-  return new Date(date).toLocaleDateString();
-};
+  return new Date(date).toLocaleDateString()
+}

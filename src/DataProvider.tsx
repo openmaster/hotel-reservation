@@ -1,25 +1,23 @@
-import { createContext, useState, useEffect } from "react";
-import { initData } from "./data";
-import { InitData } from "./models";
-import { DataService } from "./utils/DataService";
+import { createContext, useState, useEffect } from 'react'
+import { initData } from './data'
+import { type InitData } from './models'
+import { DataService } from './utils/DataService'
 
-export const DataContext = createContext<Array<InitData> | []>([]);
-
-export default function DataProvider({ children }: any) {
-  const [reservations, setReservations] = useState<Array<InitData>>(initData);
+export const DataContext = createContext<InitData[] | []>([])
+// using Rxjs to update state
+export default function DataProvider ({ children }: any) {
+  const [reservations, setReservations] = useState<InitData[]>(initData)
   useEffect(() => {
-    const sub = DataService.onData().subscribe((data: any) => {
-      console.log(data);
-      if (data) {
-        setReservations(data);
+    DataService.onData().subscribe((data: any) => {
+      if (Array.isArray(data)) {
+        setReservations([...data])
       } else {
-        setReservations(initData);
+        setReservations(initData)
       }
-    });
-
-    // return sub.unsubscribe;
-  }, []);
+    })
+  }, [])
   return (
+    // using context to provide state to rest of the application
     <DataContext.Provider value={reservations}>{children}</DataContext.Provider>
-  );
+  )
 }

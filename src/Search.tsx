@@ -1,25 +1,27 @@
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
 
 interface ISearch {
-  handleOnChange: any;
+  txt: string
+  handleOnChange: any
 }
-export default function Search({ handleOnChange }: ISearch) {
+export default function Search ({ handleOnChange, txt }: ISearch) {
   return (
     <Box
       sx={{
         width: 500,
-        maxWidth: "100%",
-        marginLeft: "auto",
-        marginRight: "auto",
+        maxWidth: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }}
     >
       <TextField
         onChange={(e) => handleOnChange(e.target.value)}
+        value={txt}
         fullWidth
         label="Search with name or phone number"
-        id="search"
+        id="searchBar"
       />
     </Box>
-  );
+  )
 }

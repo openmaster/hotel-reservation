@@ -1,20 +1,22 @@
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
+import { type PaymentRadioTypes } from '../models'
+import { pink } from '@mui/material/colors'
 
 interface IMyRadioGroup {
-  name: string;
-  label: string;
-  value: string;
-  onChange: any;
-  items: Array<string>;
+  name: string
+  label: string
+  value: string
+  onChange: any
+  items: PaymentRadioTypes[]
 }
-export default function MyRadioGroup(props: IMyRadioGroup) {
-  const { name, label, value, onChange, items } = props;
+export default function MyRadioGroup (props: IMyRadioGroup) {
+  const { name, label, value, onChange, items } = props
   return (
-    <FormControl sx={{ margin: "20px" }} >
+    <FormControl sx={{ margin: '20px' }} >
       <FormLabel id="demo-radio-buttons-group-label">{label}</FormLabel>
       <RadioGroup
         row
@@ -23,15 +25,16 @@ export default function MyRadioGroup(props: IMyRadioGroup) {
         value={value}
         onChange={onChange}
       >
-        {items.map((item: string, index: number) => (
+        {items.map((item: PaymentRadioTypes, index: number) => (
           <FormControlLabel
             key={index}
-            value={item}
-            control={<Radio />}
-            label={item}
+            value={item.value}
+            control={<Radio sx={{ color: pink[800], '&.Mui-checked': { color: pink[600] } }}
+          />}
+            label={item.label}
           />
         ))}
       </RadioGroup>
     </FormControl>
-  );
+  )
 }
