@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import DetailsDialog from './DetailsDialog'
 import useDialog from './Hooks/useDialog'
 import useStateData from './Hooks/useStateData'
-import Stack from '@mui/material/Stack';
+import Stack from '@mui/material/Stack'
 
 import { useContext } from 'react'
 import { DataContext } from './DataProvider'

@@ -9,17 +9,13 @@ export default function DataProvider ({ children }: any) {
   const [reservations, setReservations] = useState<InitData[]>(initData)
   useEffect(() => {
     DataService.onData().subscribe((data: any) => {
-      console.log(data)
-      if (data) {
+      if (Array.isArray(data)) {
         setReservations([...data])
       } else {
         setReservations(initData)
       }
     })
   }, [])
-  useEffect(() => {
-    console.log(reservations)
-  }, [reservations])
   return (
     // using context to provide state to rest of the application
     <DataContext.Provider value={reservations}>{children}</DataContext.Provider>
